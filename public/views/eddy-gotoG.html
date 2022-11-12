@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- <iframe src="https://grafana.cloud-building.com/dashboard/new?orgId=3" frameborder="0"  onload="loadFrame(this)"></iframe> -->
+</body>
+
+</html>
+<script>
+  function getCookie(name) {
+    console.log('document.cookie', document.cookie)
+    var prefix = name + "="
+    var start = document.cookie.indexOf(prefix)
+
+    if (start == -1) {
+      return null;
+    }
+
+    var end = document.cookie.indexOf(";", start + prefix.length)
+    if (end == -1) {
+      end = document.cookie.length;
+    }
+    var value = document.cookie.substring(start + prefix.length, end)
+    return unescape(value);
+  }
+
+
+
+
+
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split("=");
+      if (pair[0] == variable) {
+        return pair[1];
+      }
+    }
+    return false;
+  }
+
+  let type = getQueryVariable("type");
+  let path = getQueryVariable("path");
+  if (path) {
+    path = path.split("!")
+    path = path.join("/")
+    if (type && type === 'edit') {
+      localStorage.setItem('path', path + '?m=i')
+    } else {
+      localStorage.setItem('path', path + '?m=i&kiosk')
+    }
+  }
+  let login = localStorage.getItem('login')
+  console.log({ login })
+  // if(login){
+
+  //     window.location.href = path
+  // }else{
+
+  let url = window.location.href;
+  url = url.replace('https://grafana-sandbox.cloud-building.com/public/views/gotoG.html', '')
+  console.log(url)
+  window.location.href = '/login' + url
+    // }
+</script>

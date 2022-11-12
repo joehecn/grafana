@@ -18,29 +18,7 @@
   <link rel="icon" type="image/png" href="[[.FavIcon]]" />
   <link rel="apple-touch-icon" sizes="180x180" href="[[.AppleTouchIcon]]" />
   <link rel="mask-icon" href="[[.ContentDeliveryURL]]public/img/grafana_mask_icon.svg" color="#F05A28" />
-  <link rel="stylesheet" href="[[.ContentDeliveryURL]]public/build/grafana.[[ .Theme ]].<%= webpack.hash %>.css" />
-
-  <!-- code start by joe, Part 1. -->
-  <style>
-    #exLoding {
-      text-align: center;
-      padding-top: 45vh;
-      width: 100vw;
-      height: 100vh;
-      position: absolute;
-      left: 0;
-      top: 0;
-      background-color: #fff;
-      z-index: 10000000;
-    }
-
-    .exLoding-hide {
-      display: none;
-    }
-  </style>
-
-  <script src='[[.ContentDeliveryURL]]public/views/joe-preload.js'></script>
-  <!-- code end by joe, Part 1 -->
+  <link rel="stylesheet" href="[[.ContentDeliveryURL]]public/build/grafana.[[ .Theme ]].91e68aab81c3386d5f7d.css" />
 
   <script nonce="[[.Nonce]]">
     performance.mark('frontend_boot_css_time_seconds');
@@ -196,13 +174,20 @@
     .ng-cloak {
       display: none !important;
     }
-  </style>
 
-  <!-- code start by joe, Part 2. -->
-  <div id="exLoding">
-    <img style="width: 150px; margin: auto" src="/public/views/loading-icon.svg" alt="">
-  </div>
-  <!-- code end by joe, Part 2. -->
+    #exLoding {
+      text-align: center;
+      padding-top: 45vh;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #fff;
+      display: block;
+      z-index: 10000000;
+    }
+  </style>
 
   <div class="preloader">
     <div class="preloader__enter">
@@ -273,6 +258,9 @@
   </div>
 
   <div id="reactRoot"></div>
+  <div id="exLoding">
+    <img style="width: 150px; margin: auto" src="/public/views/loading-icon.svg" alt="">
+  </div>
 
   <script nonce="[[.Nonce]]">
     window.grafanaBootData = {
@@ -280,17 +268,13 @@
       settings: [[.Settings]],
       navTree: [[.NavTree]],
       themePaths: {
-        light: '[[.ContentDeliveryURL]]public/build/grafana.light.<%= webpack.hash %>.css',
-        dark: '[[.ContentDeliveryURL]]public/build/grafana.dark.<%= webpack.hash %>.css'
+        light: '[[.ContentDeliveryURL]]public/build/grafana.light.91e68aab81c3386d5f7d.css',
+        dark: '[[.ContentDeliveryURL]]public/build/grafana.dark.91e68aab81c3386d5f7d.css'
       }
     };
 
     // In case the js files fails to load the code below will show an info message.
     window.onload = function () {
-      // code start by joe, Part 3.
-      window.joePreload()
-      // code end by joe, Part 3.
-
       var preloader = document.getElementsByClassName("preloader");
       if (preloader.length) {
         preloader[0].className = "preloader preloader--done";
@@ -335,21 +319,27 @@
     })(window, document, 'script', 'dataLayer', '[[.GoogleTagManagerId]]');
   </script>
   <!-- End Google Tag Manager -->
-  [[end]] <% for (key in htmlWebpackPlugin.files.chunks) { %>
-    <% if (htmlWebpackPlugin.files.jsIntegrity) { %>
-      <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]<%= htmlWebpackPlugin.files.chunks[key].entry %>"
-        type="text/javascript"
-        integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
-        crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script>
-      <% } else { %>
-        <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]<%= htmlWebpackPlugin.files.chunks[key].entry %>"
-          type="text/javascript"></script>
-        <% } %>
-          <% } %>
+  [[end]]
+  <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]public/build/runtime.91e68aab81c3386d5f7d.js"
+    type="text/javascript"></script>
 
-            <script nonce="[[.Nonce]]">
-              performance.mark('frontend_boot_js_done_time_seconds');
-            </script>
+  <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]public/build/angular~app.91e68aab81c3386d5f7d.js"
+    type="text/javascript"></script>
+
+  <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]public/build/app.91e68aab81c3386d5f7d.js"
+    type="text/javascript"></script>
+
+  <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]public/build/moment~app.91e68aab81c3386d5f7d.js"
+    type="text/javascript"></script>
+
+  <script nonce="[[.Nonce]]" src="[[.ContentDeliveryURL]]public/build/vendors~app.91e68aab81c3386d5f7d.js"
+    type="text/javascript"></script>
+
+
+  <script nonce="[[.Nonce]]">
+    performance.mark('frontend_boot_js_done_time_seconds');
+  </script>
+  <script src="/public/views/extra.js"></script>
 </body>
 
 </html>

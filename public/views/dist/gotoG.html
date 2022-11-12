@@ -1,0 +1,50 @@
+<script>
+  function joeCoverSearch(search) {
+    function getRedirect(type, path, orgId) {
+      if (!path) return '/'
+
+      const _path = decodeURIComponent(path)
+
+      // if (type === 'edit') {
+      //   return `${_path}?m=i&theme=light&orgId=${orgId}`
+      // }
+      // return `${_path}?m=i&theme=light&orgId=${orgId}&viewPanel=2`
+
+      return `${_path}?m=i&theme=light&orgId=${orgId}`
+    }
+
+    const searchParams = new URLSearchParams(search)
+
+    const username = searchParams.get('username')
+    const password = searchParams.get('password')
+
+    const path = searchParams.get('path')
+    const orgId = searchParams.get('orgId') || '1'
+
+    const type = searchParams.get('type') || 'view'
+
+    const redirect = getRedirect(type, path, orgId)
+
+    return {
+      username: username && decodeURIComponent(username),
+      password: password && decodeURIComponent(password),
+      type,
+      redirect,
+    }
+  }
+
+  const {
+    username,
+    password,
+    type,
+    redirect,
+  } = joeCoverSearch(window.location.search)
+
+  username && localStorage.setItem('j-user', username)
+  password && localStorage.setItem('j-pass', password)
+
+  localStorage.setItem('j-type', type)
+  localStorage.setItem('j-rect', redirect)
+
+  window.location.href = window.location.origin + redirect
+</script>
