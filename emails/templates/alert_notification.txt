@@ -19,8 +19,5 @@ Value:
 [[end]]
 [[end]]
 
-View your Alert rule:
+View Dashboard ==>:
 [[.RuleUrl]]"
-
-Go to the Alerts page:
-[[.AlertPageUrl]]

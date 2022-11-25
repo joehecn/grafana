@@ -52,6 +52,12 @@ docker cp /Users/hemiao/joe/v3/grafana/public/views/joe-preload.js grafana8:/usr
 docker cp /Users/hemiao/joe/v3/grafana/public/views/gotoG.html grafana8:/usr/share/grafana/public/views
 
 docker cp /Users/hemiao/joe/v3/grafana/public/views/localhost/arm/target/index.html grafana8:/usr/share/grafana/public/views
+
+// 这4个对邮件有效
+docker cp /Users/hemiao/joe/v3/grafana/public/emails/alert_notification_example.html influxdb-docker-grafana8-1:/usr/share/grafana/public/emails
+docker cp /Users/hemiao/joe/v3/grafana/public/emails/alert_notification.html influxdb-docker-grafana8-1:/usr/share/grafana/public/emails
+docker cp /Users/hemiao/joe/v3/grafana/public/emails/alert_notification.txt influxdb-docker-grafana8-1:/usr/share/grafana/public/emails
+docker cp /Users/hemiao/joe/v3/grafana/public/emails/ng_alert_notification.txt influxdb-docker-grafana8-1:/usr/share/grafana/public/emails
 ```
 
 # 线上沙盒环境

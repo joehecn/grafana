@@ -3,6 +3,8 @@ package notifiers
 import (
 	"os"
 
+	"net/url" // by joe
+
 	"github.com/grafana/grafana/pkg/bus"
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/models"
@@ -92,7 +94,7 @@ func (en *EmailNotifier) Notify(evalContext *alerting.EvalContext) error {
 				"StateModel":    evalContext.GetStateModel(),
 				"Message":       evalContext.Rule.Message,
 				"Error":         error,
-				"RuleUrl":       ruleURL,
+				"RuleUrl":       setting.GetCfg().Smtp.EhloIdentity + "/assets/go.html?gafana=" + url.PathEscape(ruleURL), // by joe
 				"ImageLink":     "",
 				"EmbeddedImage": "",
 				"AlertPageUrl":  setting.AppUrl + "alerting",

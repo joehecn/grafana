@@ -13,6 +13,7 @@ import (
 	"github.com/grafana/grafana/pkg/models"
 	old_notifiers "github.com/grafana/grafana/pkg/services/alerting/notifiers"
 	"github.com/grafana/grafana/pkg/util"
+	"github.com/grafana/grafana/pkg/setting" // by joe
 )
 
 // EmailNotifier is responsible for sending
@@ -91,7 +92,7 @@ func (en *EmailNotifier) Notify(ctx context.Context, as ...*types.Alert) (bool, 
 				"CommonLabels":      data.CommonLabels,
 				"CommonAnnotations": data.CommonAnnotations,
 				"ExternalURL":       data.ExternalURL,
-				"RuleUrl":           ruleURL,
+				"RuleUrl":           setting.GetCfg().Smtp.EhloIdentity + "/assets/go.html?gafana=" + url.PathEscape(ruleURL), // by joe
 				"AlertPageUrl":      alertPageURL,
 			},
 			To:          en.Addresses,

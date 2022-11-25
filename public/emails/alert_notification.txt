@@ -19,10 +19,5 @@ Value:
 {{end}}
 {{end}}
 
-View your Alert rule:
+View Dashboard =>:
 {{.RuleUrl}}"
-
-Go to the Alerts page:
-{{.AlertPageUrl}}
-
-Sent by Grafana v{{.BuildVersion}} (c) 2021 Grafana Labs
