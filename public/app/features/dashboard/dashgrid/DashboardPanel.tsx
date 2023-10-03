@@ -42,7 +42,9 @@ const mapDispatchToProps = {
   setPanelInstanceState,
 };
 
+console.log('---- DashboardPannel connect start');
 const connector = connect(mapStateToProps, mapDispatchToProps);
+console.log('---- DashboardPannel connect stop');
 
 export type Props = OwnProps & ConnectedProps<typeof connector>;
 
@@ -52,13 +54,16 @@ export class DashboardPanelUnconnected extends PureComponent<Props> {
   };
 
   componentDidMount() {
+    console.log('---- DashboardPannel componentDidMount');
     this.props.panel.isInView = !this.props.lazy;
+    console.log({ lazy: this.props.lazy })
     if (!this.props.lazy) {
       this.onPanelLoad();
     }
   }
 
   onInstanceStateChange = (value: any) => {
+    console.log('---- DashboardPanel onInstanceStateChange', { key: this.props.stateKey, value });
     this.props.setPanelInstanceState({ key: this.props.stateKey, value });
   };
 
@@ -68,6 +73,7 @@ export class DashboardPanelUnconnected extends PureComponent<Props> {
 
   onPanelLoad = () => {
     if (!this.props.plugin) {
+      console.log('---- onPanelLoad');
       this.props.initPanelState(this.props.panel);
     }
   };
@@ -85,6 +91,20 @@ export class DashboardPanelUnconnected extends PureComponent<Props> {
       hideMenu,
       isDraggable = true,
     } = this.props;
+
+    // console.log({
+    //   dashboard,
+    //   panel,
+    //   isViewing,
+    //   isEditing,
+    //   width,
+    //   height,
+    //   plugin,
+    //   timezone,
+    //   hideMenu,
+    //   isDraggable,
+    //   angularPanelCtrl: plugin?.angularPanelCtrl,
+    // });
 
     if (!plugin) {
       return null;
@@ -125,7 +145,12 @@ export class DashboardPanelUnconnected extends PureComponent<Props> {
   };
 
   render() {
-    const { width, height, lazy } = this.props;
+    console.log('---- DashboardPannel render start');
+    const { width, height, lazy, dashboard } = this.props;
+    const panel = dashboard.panels[0];
+    if (!(panel && panel.plugin)) {
+      console.log('---- DashboardPannel render No plugin');
+    }
 
     return lazy ? (
       <LazyLoader width={width} height={height} onChange={this.onVisibilityChange} onLoad={this.onPanelLoad}>

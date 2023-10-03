@@ -1,0 +1,13 @@
+{
+  "name": "t",
+  "version": "1.0.0",
+  "description": "",
+  "main": "t.js",
+  "type": "module",
+  "scripts": {
+    "start": "node t.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

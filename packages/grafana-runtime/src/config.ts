@@ -18,6 +18,8 @@ import {
   getThemeById,
 } from '@grafana/data';
 
+import panels from './panels.json'
+
 export interface AzureSettings {
   cloud?: string;
   managedIdentityEnabled: boolean;
@@ -244,7 +246,7 @@ function overrideFeatureTogglesFromUrl(config: GrafanaBootConfig) {
 }
 
 const bootData = (window as any).grafanaBootData || {
-  settings: {},
+  settings: { panels },
   user: {},
   navTree: [],
 };

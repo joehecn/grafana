@@ -1,0 +1,9 @@
+{
+  "name": "grafana-to-web-component",
+  "version": "1.0.0",
+  "description": "Grafana to web component",
+  "main": "dist/app.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

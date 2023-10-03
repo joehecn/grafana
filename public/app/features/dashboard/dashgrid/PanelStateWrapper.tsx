@@ -484,12 +484,38 @@ export class PanelStateWrapper extends PureComponent<Props, State> {
     }
 
     const PanelComponent = plugin.panel!;
+    console.log(PanelComponent);
     const timeRange = this.state.liveTime ?? data.timeRange ?? this.timeSrv.timeRange();
     const panelOptions = panel.getOptions();
 
     // Update the event filter (dashboard settings may have changed)
     // Yes this is called ever render for a function that is triggered on every mouse move
     this.eventFilter.onlyLocal = dashboard.graphTooltip === 0;
+
+    console.log(plugin);
+
+    console.log({
+      value: this.state.context
+    });
+
+    console.log({
+      id: panel.id,
+      data: data,
+      title: panel.title,
+      timeRange: timeRange,
+      timeZone: this.props.dashboard.getTimezone(),
+      options: panelOptions,
+      fieldConfig: panel.fieldConfig,
+      transparent: panel.transparent,
+      width: innerWidth,
+      height: innerHeight,
+      renderCounter: renderCounter,
+      replaceVariables: panel.replaceVariables,
+      onOptionsChange: this.onOptionsChange,
+      onFieldConfigChange: this.onFieldConfigChange,
+      onChangeTimeRange: this.onChangeTimeRange,
+      eventBus: dashboard.events
+    });
 
     return (
       <>
@@ -522,7 +548,10 @@ export class PanelStateWrapper extends PureComponent<Props, State> {
     const { errorMessage, data } = this.state;
     const { transparent } = panel;
 
+    // console.log(this.props);
+    // console.log({ errorMessage, data });
     const panelChromeProps = getPanelChromeProps({ ...this.props, data });
+    // console.log(panelChromeProps);
 
     // Shift the hover menu down if it's on the top row so it doesn't get clipped by topnav
     const hoverHeaderOffset = (panel.gridPos?.y ?? 0) === 0 ? -16 : undefined;
@@ -533,25 +562,49 @@ export class PanelStateWrapper extends PureComponent<Props, State> {
       </div>
     );
 
+    const {
+      title,
+      description,
+      titleItems,
+      dragClass,
+      padding,
+      onOpenErrorInspect,
+      hasOverlayHeader,
+      onCancelQuery,
+      onOpenMenu
+    } = panelChromeProps;
+
+    console.log({
+      title,
+      description,
+      titleItems,
+      dragClass,
+      padding,
+      onOpenErrorInspect,
+      hasOverlayHeader,
+      onCancelQuery,
+      onOpenMenu
+    });
+
     return (
       <PanelChrome
         width={width}
         height={height}
-        title={panelChromeProps.title}
+        title={title}
         loadingState={data.state}
         statusMessage={errorMessage}
-        statusMessageOnClick={panelChromeProps.onOpenErrorInspect}
-        description={panelChromeProps.description}
-        titleItems={panelChromeProps.titleItems}
+        statusMessageOnClick={onOpenErrorInspect}
+        description={description}
+        titleItems={titleItems}
         menu={this.props.hideMenu ? undefined : menu}
-        dragClass={panelChromeProps.dragClass}
+        dragClass={dragClass}
         dragClassCancel="grid-drag-cancel"
-        padding={panelChromeProps.padding}
+        padding={padding}
         hoverHeaderOffset={hoverHeaderOffset}
-        hoverHeader={panelChromeProps.hasOverlayHeader()}
+        hoverHeader={hasOverlayHeader()}
         displayMode={transparent ? 'transparent' : 'default'}
-        onCancelQuery={panelChromeProps.onCancelQuery}
-        onOpenMenu={panelChromeProps.onOpenMenu}
+        onCancelQuery={onCancelQuery}
+        onOpenMenu={onOpenMenu}
       >
         {(innerWidth, innerHeight) => (
           <>

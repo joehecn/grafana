@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "allowJs": true,
+    "strict": true,
+    "useUnknownInCatchVariables": true,
+    "incremental": true,
+    "preserveSymlinks": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    "declarationDir": "./compiled",
+    "emitDeclarationOnly": true,
+    "isolatedModules": false,
+    "resolveJsonModule": true,
+    "rootDirs": ["."],
+    "lib": ["es2021", "dom"]
+  },
+  "exclude": ["dist/**/*"],
+  "extends": "@grafana/tsconfig",
+  "include": [
+    "src/**/*.ts*",
+    "../../public/app/types/*.d.ts",
+    "../../public/app/**/*.ts*",
+    "../../public/e2e-test/**/*.ts",
+    "../../public/test/**/*.ts",
+    "../../public/vendor/**/*.ts",
+    "../grafana-data/typings"
+  ],
+  // override for storybook which uses ts-node to compile main.ts / preview.ts files.
+  "ts-node": {
+    "compilerOptions": {
+      "isolatedModules": false,
+      "resolveJsonModule": true,
+      "module": "commonjs"
+    }
+  }
+}

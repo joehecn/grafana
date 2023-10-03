@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Action, KBarProvider } from 'kbar';
 import React, { ComponentType } from 'react';
 import { Provider } from 'react-redux';

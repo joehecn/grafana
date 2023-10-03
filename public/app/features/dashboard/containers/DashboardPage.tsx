@@ -335,6 +335,7 @@ export class UnthemedDashboardPage extends PureComponent<Props, State> {
   render() {
     const { dashboard, initError, queryParams } = this.props;
     const { editPanel, viewPanel, updateScrollTop, pageNav, sectionNav } = this.state;
+    console.log({ editPanel, viewPanel });
     const kioskMode = getKioskMode(this.props.queryParams);
 
     if (!dashboard || !pageNav || !sectionNav) {

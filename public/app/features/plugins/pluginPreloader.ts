@@ -11,10 +11,13 @@ export type PluginPreloadResult = {
 };
 
 export async function preloadPlugins(apps: Record<string, AppPluginConfig> = {}): Promise<PluginPreloadResult[]> {
+  console.log('---- preloadPlugins');
+  console.log(apps);
   startMeasure('frontend_plugins_preload');
   const pluginsToPreload = Object.values(apps).filter((app) => app.preload);
   const result = await Promise.all(pluginsToPreload.map(preload));
   stopMeasure('frontend_plugins_preload');
+  console.log(result);
   return result;
 }
 

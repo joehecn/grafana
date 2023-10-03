@@ -10,7 +10,9 @@ import { DashboardPanelsChangedEvent, PanelOptionsChangedEvent, PanelQueriesChan
 import { changePanelKey, panelModelAndPluginReady, removePanel } from './reducers';
 
 export function initPanelState(panel: PanelModel): ThunkResult<Promise<void>> {
+  console.log('---- actions initPanelState');
   return async (dispatch, getStore) => {
+    console.log('---- who? when?');
     if (panel.libraryPanel?.uid && !('model' in panel.libraryPanel)) {
       // this will call init with a loaded library panel if it loads succesfully
       dispatch(loadLibraryPanelAndUpdate(panel));
@@ -18,18 +20,23 @@ export function initPanelState(panel: PanelModel): ThunkResult<Promise<void>> {
     }
 
     let pluginToLoad = panel.type;
+    console.log('---- pluginToLoad', pluginToLoad);
     let plugin = getStore().plugins.panels[pluginToLoad];
+    console.log('---- plugin', plugin);
 
     if (!plugin) {
       try {
         plugin = await dispatch(loadPanelPlugin(pluginToLoad));
+        console.log('---- plugin', plugin);
       } catch (e) {
         // When plugin not found
+        console.log('---- When plugin not found', e);
         plugin = getPanelPluginNotFound(pluginToLoad, pluginToLoad === 'row');
       }
     }
 
     if (!panel.plugin) {
+      console.log('---- panel.plugin', panel.plugin);
       await panel.pluginLoaded(plugin);
     }
 

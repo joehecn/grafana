@@ -19,6 +19,7 @@ export function LazyLoader({ children, width, height, onLoad, onChange }: Props)
     LazyLoader.addCallback(id, (entry) => {
       if (!loaded && entry.isIntersecting) {
         setLoaded(true);
+        console.log('---- Lazy onPanelLoad');
         onLoad?.();
       }
 

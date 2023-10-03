@@ -6,6 +6,7 @@
   "version": "10.2.0-pre",
   "repository": "github:grafana/grafana",
   "scripts": {
+    "component": "yarn i18n:compile && NODE_ENV=production webpack --progress --config scripts/webpack/webpack.component.js --mode production",
     "build": "yarn i18n:compile && NODE_ENV=production webpack --progress --config scripts/webpack/webpack.prod.js",
     "build:nominify": "yarn run build --env noMinify=1",
     "dev": "yarn i18n:compile && NODE_ENV=dev webpack --progress --color --config scripts/webpack/webpack.dev.js",
@@ -267,6 +268,7 @@
     "@opentelemetry/semantic-conventions": "1.15.0",
     "@popperjs/core": "2.11.8",
     "@prometheus-io/lezer-promql": "^0.37.0-rc.1",
+    "@r2wc/react-to-web-component": "^2.0.2",
     "@react-aria/button": "3.8.0",
     "@react-aria/dialog": "3.5.3",
     "@react-aria/focus": "3.13.0",

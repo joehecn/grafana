@@ -191,7 +191,9 @@ export function initDashboard(args: InitDashboardArgs): ThunkResult<void> {
     // create model
     let dashboard: DashboardModel;
     try {
+      console.log(dashDTO);
       dashboard = new DashboardModel(dashDTO.dashboard, dashDTO.meta);
+      console.log(dashboard);
     } catch (err) {
       dispatch(dashboardInitFailed({ message: 'Failed create dashboard model', error: err }));
       console.error(err);

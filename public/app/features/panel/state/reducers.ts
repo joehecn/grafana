@@ -33,6 +33,7 @@ const panelsSlice = createSlice({
       Object.keys(state).forEach((key) => delete state[key]);
     },
     setPanelInstanceState: (state, action: PayloadAction<SetPanelInstanceStatePayload>) => {
+      console.log('---- redusers setPanelInstanceState', action.payload.key, action.payload.value)
       state[action.payload.key].instanceState = action.payload.value;
     },
     setPanelAngularComponent: (state, action: PayloadAction<SetPanelAngularComponentPayload>) => {

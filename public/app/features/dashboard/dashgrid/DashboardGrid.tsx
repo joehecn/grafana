@@ -150,6 +150,10 @@ export class DashboardGrid extends PureComponent<Props> {
     }
 
     for (const panel of this.props.dashboard.panels) {
+      if (!(panel && panel.plugin)) {
+        console.log('---- DashboardGrid renderPanels No plugin');
+      }
+
       const panelClasses = classNames({ 'react-grid-item--fullscreen': panel.isViewing });
 
       // used to allow overflowing content to show on top of the next panel
@@ -168,6 +172,7 @@ export class DashboardGrid extends PureComponent<Props> {
           isViewing={panel.isViewing}
         >
           {(width: number, height: number) => {
+            console.log('---- DashboardGrid renderPanel 1');
             return this.renderPanel(panel, width, height, isDashboardDraggable);
           }}
         </GrafanaGridItem>
@@ -178,6 +183,7 @@ export class DashboardGrid extends PureComponent<Props> {
   }
 
   renderPanel(panel: PanelModel, width: number, height: number, isDraggable: boolean) {
+    console.log('---- DashboardGrid renderPanel 2');
     if (panel.type === 'row') {
       return <DashboardRow key={panel.key} panel={panel} dashboard={this.props.dashboard} />;
     }
@@ -189,6 +195,12 @@ export class DashboardGrid extends PureComponent<Props> {
 
     if (panel.type === 'add-library-panel') {
       return <AddLibraryPanelWidget key={panel.key} panel={panel} dashboard={this.props.dashboard} />;
+    }
+
+    if (!panel.plugin) {
+      console.log('---- DashboardGrid renderPanel No plugin');
+    } else {
+      console.log('---- DashboardGrid renderPanel plugin', panel.plugin);
     }
 
     return (
@@ -221,6 +233,11 @@ export class DashboardGrid extends PureComponent<Props> {
 
   render() {
     const { isEditable, dashboard } = this.props;
+    
+    const panel = dashboard.panels[0];
+    if (!(panel && panel.plugin)) {
+      console.log('---- DashboardGrid render No plugin');
+    }
 
     if (config.featureToggles.emptyDashboardPage && dashboard.panels.length === 0) {
       return <DashboardEmpty dashboard={dashboard} canCreate={isEditable} />;
@@ -242,7 +259,15 @@ export class DashboardGrid extends PureComponent<Props> {
             // Disable draggable if mobile device, solving an issue with unintentionally
             // moving panels. https://github.com/grafana/grafana/issues/18497
             const draggable = width <= config.theme2.breakpoints.values.md ? false : isEditable;
-
+            // console.log({
+            //   width,
+            //   draggable,
+            //   isEditable,
+            //   GRID_CELL_VMARGIN,
+            //   GRID_COLUMN_COUNT,
+            //   GRID_CELL_HEIGHT,
+            //   layout: this.buildLayout(),
+            // });
             return (
               /**
                * The children is using a width of 100% so we need to guarantee that it is wrapped

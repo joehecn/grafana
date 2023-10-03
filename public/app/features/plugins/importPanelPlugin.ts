@@ -5,16 +5,20 @@ import { getPanelPluginLoadError } from '../panel/components/PanelPluginError';
 
 import { importPluginModule } from './plugin_loader';
 
+console.log(config);
+
 const promiseCache: Record<string, Promise<PanelPlugin>> = {};
 const panelPluginCache: Record<string, PanelPlugin> = {};
 
 export function importPanelPlugin(id: string): Promise<PanelPlugin> {
   const loaded = promiseCache[id];
+  console.log('---- importPanelPlugin', id, loaded);
   if (loaded) {
     return loaded;
   }
 
   const meta = getPanelPluginMeta(id);
+  console.log('---- importPanelPlugin', meta);
 
   if (!meta) {
     throw new Error(`Plugin ${id} not found`);
@@ -34,6 +38,7 @@ export function hasPanelPlugin(id: string): boolean {
 
 export function getPanelPluginMeta(id: string): PanelPluginMeta {
   const v = config.panels[id];
+  console.log('---- getPanelPluginMeta', { id, v });
   if (!v) {
     // Check alias values before failing
     for (const p of Object.values(config.panels)) {

@@ -225,10 +225,14 @@ export const panelPluginLoaded = createAction<PanelPlugin>(`${STATE_PREFIX}/pane
 // TODO<remove once the "plugin_admin_enabled" feature flag is removed>
 export const loadPanelPlugin = (id: string): ThunkResult<Promise<PanelPlugin>> => {
   return async (dispatch, getStore) => {
-    let plugin = getStore().plugins.panels[id];
+    const store = getStore();
+    console.log(store);
+    let plugin = store.plugins.panels[id];
 
     if (!plugin) {
+      console.log('---- importPanelPlugin');
       plugin = await importPanelPlugin(id);
+      console.log('---- plugin', plugin);
 
       // second check to protect against raise condition
       if (!getStore().plugins.panels[id]) {
