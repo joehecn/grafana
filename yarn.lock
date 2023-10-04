@@ -7262,6 +7262,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@r2wc/core@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@r2wc/core@npm:1.0.0"
+  checksum: 541d03241d14450d383242dc263ef955f54ba52e8220712ca10744b72eb5bc8fc8a60eabfc5602c05f9ae2f3ee47108aa436cf30db5265ad16f743df15968d3b
+  languageName: node
+  linkType: hard
+
+"@r2wc/react-to-web-component@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@r2wc/react-to-web-component@npm:2.0.3"
+  dependencies:
+    "@r2wc/core": ^1.0.0
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 762bbd07d0f0d1476e4874a8f7533321e92af8a1033c7e1ec5cf9a4085bcc361fccf67e66e347baf8228b77dc33f59e4f8b63197044a3b529ac5ff0387db1cd8
+  languageName: node
+  linkType: hard
+
 "@radix-ui/number@npm:1.0.1":
   version: 1.0.1
   resolution: "@radix-ui/number@npm:1.0.1"
@@ -20458,6 +20477,7 @@ __metadata:
     "@pmmmwh/react-refresh-webpack-plugin": 0.5.10
     "@popperjs/core": 2.11.8
     "@prometheus-io/lezer-promql": ^0.37.0-rc.1
+    "@r2wc/react-to-web-component": ^2.0.3
     "@react-aria/button": 3.8.0
     "@react-aria/dialog": 3.5.3
     "@react-aria/focus": 3.13.0

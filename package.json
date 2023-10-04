@@ -6,6 +6,7 @@
   "version": "10.2.0-pre",
   "repository": "github:grafana/grafana",
   "scripts": {
+    "component": "yarn i18n:compile && NODE_ENV=production webpack --progress --config scripts/webpack/webpack.component.js",
     "build": "yarn i18n:compile && NODE_ENV=production webpack --progress --config scripts/webpack/webpack.prod.js",
     "build:nominify": "yarn run build --env noMinify=1",
     "dev": "yarn i18n:compile && NODE_ENV=dev webpack --progress --color --config scripts/webpack/webpack.dev.js",
@@ -82,6 +83,7 @@
     "@grafana/eslint-plugin": "link:./packages/grafana-eslint-rules",
     "@grafana/tsconfig": "^1.3.0-rc1",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
+    "@r2wc/react-to-web-component": "^2.0.3",
     "@react-types/button": "3.7.3",
     "@react-types/menu": "3.9.2",
     "@react-types/overlays": "3.8.0",

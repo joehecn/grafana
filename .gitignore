@@ -200,3 +200,5 @@ deployment_tools_config.json
 
 # Temporary file for backporting PRs
 .pr-body.txt
+
+lib/grafana-to-web-component
