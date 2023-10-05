@@ -108,6 +108,8 @@ export class BackendSrv implements BackendService {
   }
 
   async request<T = any>(options: BackendSrvRequest): Promise<T> {
+    options.url = 'http://localhost:3001' + options.url;
+    // console.log(options)
     return await lastValueFrom(this.fetch<T>(options).pipe(map((response: FetchResponse<T>) => response.data)));
   }
 

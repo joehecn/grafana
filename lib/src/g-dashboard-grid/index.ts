@@ -1,1 +1,1 @@
-export { default as GDashboardGrid } from "./GDashboardGrid";
+export { getGDashboardGrid } from "./GDashboardGrid";
