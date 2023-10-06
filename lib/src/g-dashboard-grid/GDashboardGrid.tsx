@@ -10,8 +10,8 @@ import dashboardJson from './dashboard.json';
 
 export function getGDashboardGrid() {
   return function GDashboardGrid() {
-    const db = dashboardJson as unknown as Dashboard;
-    const dashboard = new DashboardModel(db);
+    const dbJson = dashboardJson as unknown as Dashboard;
+    const dashboard = new DashboardModel(dbJson);
   
     const viewPanel = null
     const editPanel = null

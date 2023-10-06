@@ -7,7 +7,7 @@ import 'file-saver';
 import 'jquery';
 
 import 'app/features/all';
-·
+
 import r2wc from "@r2wc/react-to-web-component";
 import _ from 'lodash'; // eslint-disable-line lodash/import-scope
 
@@ -44,6 +44,7 @@ import { AppChromeService } from 'app/core/components/AppChrome/AppChromeService
 import { getAllOptionEditors, getAllStandardFieldConfigs } from 'app/core/components/OptionsUI/registry';
 import { PluginPage } from 'app/core/components/Page/PluginPage';
 import config from 'app/core/config';
+import { GrafanaContextType } from 'app/core/context/GrafanaContext';
 import { initializeI18n } from 'app/core/internationalization';
 import { interceptLinkClicks } from 'app/core/navigation/patch/interceptLinkClicks';
 import { ModalManager } from 'app/core/services/ModalManager';
@@ -57,6 +58,7 @@ import { GA4EchoBackend } from 'app/core/services/echo/backends/analytics/GA4Bac
 import { GAEchoBackend } from 'app/core/services/echo/backends/analytics/GABackend';
 import { RudderstackBackend } from 'app/core/services/echo/backends/analytics/RudderstackBackend';
 import { GrafanaJavascriptAgentBackend } from 'app/core/services/echo/backends/grafana-javascript-agent/GrafanaJavascriptAgentBackend';
+import { KeybindingSrv } from 'app/core/services/keybindingSrv';
 import { arrayMove } from 'app/core/utils/arrayMove';
 import { initAuthConfig } from 'app/features/auth-config';
 import { getTimeSrv } from 'app/features/dashboard/services/TimeSrv';
@@ -90,6 +92,7 @@ import { configureStore } from 'app/store/configureStore';
 import getDefaultMonacoLanguages from '../../public/lib/monaco-languages';
 
 import { getGDashboardGrid } from './g-dashboard-grid';
+import { getGPanelEditor } from './g-panel-editor';
 
 // add move to lodash for backward compatabilty with plugins
 // @ts-ignore
@@ -306,6 +309,7 @@ async function init() {
   // initialize chrome service
   const queryParams = locationService.getSearchObject();
   const chromeService = new AppChromeService();
+  const keybindingsService = new KeybindingSrv(locationService, chromeService);
 
   // Read initial kiosk mode from url at app startup
   chromeService.setKioskModeFromUrl(queryParams.kiosk);
@@ -316,19 +320,35 @@ async function init() {
   } catch (err) {
     console.warn('Failed to clean up old expanded folders', err);
   }
+
+  const context = {
+    backend: backendSrv,
+    location: locationService,
+    chrome: chromeService,
+    keybindings: keybindingsService,
+    config,
+  };
+
+  return context;
 }
 
 async function getAllComponents() {
   if (cache !== null) { return cache; }
 
-  await init();
+  const context: GrafanaContextType = await init();
 
   const GDashboardGrid = getGDashboardGrid();
   const GDashboardGridWC = r2wc(GDashboardGrid);
 
+  const GPanelEditor = getGPanelEditor({ context });
+  const GPanelEditorWC = r2wc(GPanelEditor);
+
   cache = {
     GDashboardGrid,
-    GDashboardGridWC
+    GPanelEditor,
+
+    GDashboardGridWC,
+    GPanelEditorWC
   }
 
   return cache;

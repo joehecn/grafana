@@ -1,10 +1,7 @@
-/* eslint-disable import/order */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import getAllComponents from '../../lib/src/main';
-
-import { GrafanaContextType } from './core/context/GrafanaContext';
 
 import { initDevFeatures } from './dev';
 
@@ -12,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
   initDevFeatures();
 }
 export class GrafanaApp {
-  context!: GrafanaContextType;
+  context!: any;
 
   async init() {
     try {
@@ -20,9 +17,11 @@ export class GrafanaApp {
       parent.postMessage('GrafanaAppInit', '*');
 
       const root = createRoot(document.getElementById('reactRoot')!);
-      const { GDashboardGrid } = await getAllComponents();
+      // GDashboardGrid
+      // GPanelEditor
+      const { GPanelEditor } = await getAllComponents();
       root.render(
-        React.createElement(GDashboardGrid)
+        React.createElement(GPanelEditor)
       );
     } catch (error) {
       console.error('Failed to start Grafana', error);
