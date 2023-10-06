@@ -10,6 +10,7 @@ import { GrafanaContextType, GrafanaContext } from 'app/core/context/GrafanaCont
 import { getNavModel } from 'app/core/selectors/navModel';
 import { ThemeProvider } from 'app/core/utils/ConfigProvider';
 import { PanelEditor } from 'app/features/dashboard/components/PanelEditor/PanelEditor';
+import { DashboardSrv, getDashboardSrv } from 'app/features/dashboard/services/DashboardSrv';
 import { getTimeSrv, TimeSrv } from 'app/features/dashboard/services/TimeSrv';
 import { DashboardModel, PanelModel } from 'app/features/dashboard/state';
 import { createDashboardQueryRunner } from 'app/features/query/state/DashboardQueryRunner/DashboardQueryRunner';
@@ -23,6 +24,11 @@ export function getGPanelEditor({ context }: { context: GrafanaContextType }) {
     const dashboard = new DashboardModel(dbJson);
 
     const timeSrv: TimeSrv = getTimeSrv();
+    const dashboardSrv: DashboardSrv = getDashboardSrv();
+
+    // legacy srv state, we need this value updated for built-in annotations
+    dashboardSrv.setCurrent(dashboard);
+
     timeSrv.init(dashboard);
     const runner = createDashboardQueryRunner({ dashboard, timeSrv });
     runner.run({ dashboard, range: timeSrv.timeRange() });

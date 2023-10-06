@@ -108,12 +108,13 @@ export class BackendSrv implements BackendService {
   }
 
   async request<T = any>(options: BackendSrvRequest): Promise<T> {
-    options.url = 'http://localhost:3001' + options.url;
-    // console.log(options)
     return await lastValueFrom(this.fetch<T>(options).pipe(map((response: FetchResponse<T>) => response.data)));
   }
 
   fetch<T>(options: BackendSrvRequest): Observable<FetchResponse<T>> {
+    if (window.location.origin === 'http://localhost:3002') {
+      options.url = 'http://localhost:3001' + options.url;
+    }
     // We need to match an entry added to the queue stream with the entry that is eventually added to the response stream
     const id = uuidv4();
     const fetchQueue = this.fetchQueue;

@@ -162,5 +162,7 @@ export const parseCredentials = (options: BackendSrvRequest): RequestCredentials
     return 'include';
   }
 
-  return 'same-origin';
+  return 'include';
+  // return 'same-origin';
+  // return 'omit';
 };
