@@ -17,11 +17,12 @@ export class GrafanaApp {
       parent.postMessage('GrafanaAppInit', '*');
 
       const root = createRoot(document.getElementById('reactRoot')!);
+      // GWelcome
       // GDashboardGrid
       // GPanelEditor
-      const { GPanelEditor } = await getAllComponents();
+      const { GWelcome } = await getAllComponents();
       root.render(
-        React.createElement(GPanelEditor)
+        React.createElement(GWelcome)
       );
     } catch (error) {
       console.error('Failed to start Grafana', error);

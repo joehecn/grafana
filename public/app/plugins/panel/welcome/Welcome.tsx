@@ -1,8 +1,10 @@
-import { css } from '@emotion/css';
+// import { css } from '@emotion/css';
 import React from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { useStyles2 } from '@grafana/ui';
+
+import { getCC } from '../../../../../lib/src/cc';
 
 const helpOptions = [
   { value: 0, label: 'Documentation', href: 'https://grafana.com/docs/grafana/latest' },
@@ -38,6 +40,8 @@ export const WelcomeBanner = () => {
 };
 
 const getStyles = (theme: GrafanaTheme2) => {
+  const { css } = getCC();
+
   return {
     container: css`
       display: flex;

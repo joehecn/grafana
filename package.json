@@ -236,8 +236,12 @@
   },
   "dependencies": {
     "@daybrush/utils": "1.13.0",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/core": "^11.0.0",
     "@emotion/css": "11.11.2",
     "@emotion/react": "11.11.1",
+    "@emotion/serialize": "^1.1.2",
+    "@emotion/styled": "^11.11.0",
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@glideapps/glide-data-grid": "^5.2.1",
     "@grafana/aws-sdk": "0.1.3",

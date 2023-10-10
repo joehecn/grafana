@@ -93,6 +93,7 @@ import getDefaultMonacoLanguages from '../../public/lib/monaco-languages';
 
 import { getGDashboardGrid } from './g-dashboard-grid';
 import { getGPanelEditor } from './g-panel-editor';
+import { getGWelcome } from './g-welcome';
 
 // add move to lodash for backward compatabilty with plugins
 // @ts-ignore
@@ -337,6 +338,9 @@ async function getAllComponents() {
 
   const context: GrafanaContextType = await init();
 
+  const GWelcome = getGWelcome();
+  const GWelcomeWC = r2wc(GWelcome);
+
   const GDashboardGrid = getGDashboardGrid();
   const GDashboardGridWC = r2wc(GDashboardGrid);
 
@@ -344,9 +348,11 @@ async function getAllComponents() {
   const GPanelEditorWC = r2wc(GPanelEditor);
 
   cache = {
+    GWelcome,
     GDashboardGrid,
     GPanelEditor,
 
+    GWelcomeWC,
     GDashboardGridWC,
     GPanelEditorWC
   }

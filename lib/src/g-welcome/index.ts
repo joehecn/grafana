@@ -1,0 +1,1 @@
+export { getGWelcome } from "./GWelcome";
