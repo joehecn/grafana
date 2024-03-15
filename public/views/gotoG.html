@@ -1,4 +1,38 @@
 <script>
+  async function getFetchStatus(url) {
+    const res = await fetch(url, {
+      method: 'GET'
+    })
+    return res.status
+  }
+
+  // 获取 cookie
+  function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  // 删除 cookie
+  function deleteCookie(cname) {
+    const date = new Date();
+    date.setTime(date.getTime() - 10000);
+
+    console.log("需要删除的cookie:", cname);
+    document.cookie = cname + "=; expire=" + date.toGMTString() + "; path=/";
+
+  }
+
   function joeCoverSearch(search) {
     function getRedirect(type, path, orgId) {
       if (!path) return '/'
@@ -40,11 +74,41 @@
     redirect,
   } = joeCoverSearch(window.location.search)
 
+  console.log({
+    username,
+    password,
+    type,
+    redirect,
+  })
+
   username && localStorage.setItem('j-user', username)
   password && localStorage.setItem('j-pass', password)
 
   localStorage.setItem('j-type', type)
   localStorage.setItem('j-rect', redirect)
 
-  window.location.href = window.location.origin + redirect
+  const redirectUrl = window.location.origin + redirect
+
+  // 检查有没有 Cookie
+  const grafanaSessionCookie = getCookie('grafana_session')
+
+  if (grafanaSessionCookie) {
+    // 如果有 Cookie, 检查 Cookie 是否有效
+    getFetchStatus(redirectUrl).then(status => {
+      console.log({ status })
+      if (status === 403) {
+        // 说明 Cookie 失效了, 设置 Cookie 为空
+        deleteCookie('grafana_session')
+      }
+
+      window.location.href = redirectUrl
+    }).catch(err => {
+      console.log('---- getFetchStatus Error ----')
+      console.error({ err })
+      window.location.href = redirectUrl
+    })
+  } else {
+    // 如果没有 Cookie 直接跳转
+    window.location.href = redirectUrl
+  }
 </script>
