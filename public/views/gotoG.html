@@ -28,7 +28,6 @@
     const date = new Date();
     date.setTime(date.getTime() - 10000);
 
-    console.log("需要删除的cookie:", cname);
     document.cookie = cname + "=; expire=" + date.toGMTString() + "; path=/";
 
   }
@@ -38,11 +37,6 @@
       if (!path) return '/'
 
       const _path = decodeURIComponent(path)
-
-      // if (type === 'edit') {
-      //   return `${_path}?m=i&theme=light&orgId=${orgId}`
-      // }
-      // return `${_path}?m=i&theme=light&orgId=${orgId}&viewPanel=2`
 
       return `${_path}?m=i&theme=light&orgId=${orgId}`
     }
@@ -74,13 +68,6 @@
     redirect,
   } = joeCoverSearch(window.location.search)
 
-  console.log({
-    username,
-    password,
-    type,
-    redirect,
-  })
-
   username && localStorage.setItem('j-user', username)
   password && localStorage.setItem('j-pass', password)
 
@@ -95,16 +82,13 @@
   if (grafanaSessionCookie) {
     // 如果有 Cookie, 检查 Cookie 是否有效
     getFetchStatus(redirectUrl).then(status => {
-      console.log({ status })
       if (status === 403) {
         // 说明 Cookie 失效了, 设置 Cookie 为空
         deleteCookie('grafana_session')
       }
 
       window.location.href = redirectUrl
-    }).catch(err => {
-      console.log('---- getFetchStatus Error ----')
-      console.error({ err })
+    }).catch(_ => {
       window.location.href = redirectUrl
     })
   } else {

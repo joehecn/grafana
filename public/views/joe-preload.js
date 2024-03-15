@@ -18,8 +18,6 @@ window.joePreload = async function () {
     // 已经到最终页面
     const type = localStorage.getItem('j-type');
 
-    // console.log({ type })
-
     if (type === 'view') {
       addCss(`
         /* 隐藏侧边栏 */
