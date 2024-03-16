@@ -1,68 +1,68 @@
 <script>
-  // 获取 cookie
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
+  async function joeGotoG() {
+    // 获取 cookie
+    function getCookie(cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
       }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
+      return "";
+    }
+
+    // 设置 cookie
+    function setCookieByExpires(cname, cvalue, expires) {
+      document.cookie = `${cname}=${cvalue}; expires=${expires}; path=/; SameSite=None; Secure`;
+    }
+    function setCookie(cname, cvalue, exdays) {
+      const d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      const expires = d.toUTCString();
+      setCookieByExpires(cname, cvalue, expires);
+    }
+
+    // 删除 cookie
+    function deleteCookie(cname) {
+      setCookieByExpires(cname, '', 'Thu, 01 Jan 1970 00:00:00 UTC');
+    }
+
+    function joeCoverSearch(search) {
+      function getRedirect(type, path, orgId) {
+        if (!path) return '/'
+
+        const _path = decodeURIComponent(path)
+
+        return `${_path}?m=i&theme=light&orgId=${orgId}`
+      }
+
+      const searchParams = new URLSearchParams(search)
+
+      const username = searchParams.get('username')
+      const password = searchParams.get('password')
+
+      const path = searchParams.get('path')
+      const orgId = searchParams.get('orgId') || '1'
+
+      const type = searchParams.get('type') || 'view'
+
+      const redirect = getRedirect(type, path, orgId)
+
+      return {
+        username: username && decodeURIComponent(username),
+        password: password && decodeURIComponent(password),
+        type,
+        redirect,
+        orgId,
       }
     }
-    return "";
-  }
 
-  // 设置 cookie
-  function setCookieByExpires(cname, cvalue, expires) {
-    document.cookie = `${cname}=${cvalue}; expires=${expires}; path=/; SameSite=None; Secure`;
-  }
-  function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    const expires = d.toUTCString();
-    setCookieByExpires(cname, cvalue, expires);
-  }
-
-  // 删除 cookie
-  function deleteCookie(cname) {
-    setCookieByExpires(cname, '', 'Thu, 01 Jan 1970 00:00:00 UTC');
-  }
-
-  function joeCoverSearch(search) {
-    function getRedirect(type, path, orgId) {
-      if (!path) return '/'
-
-      const _path = decodeURIComponent(path)
-
-      return `${_path}?m=i&theme=light&orgId=${orgId}`
-    }
-
-    const searchParams = new URLSearchParams(search)
-
-    const username = searchParams.get('username')
-    const password = searchParams.get('password')
-
-    const path = searchParams.get('path')
-    const orgId = searchParams.get('orgId') || '1'
-
-    const type = searchParams.get('type') || 'view'
-
-    const redirect = getRedirect(type, path, orgId)
-
-    return {
-      username: username && decodeURIComponent(username),
-      password: password && decodeURIComponent(password),
-      type,
-      redirect,
-      orgId,
-    }
-  }
-
-  async function run() {
     const {
       username,
       password,
@@ -121,7 +121,7 @@
     }
   }
 
-  run().then(res => {
+  joeGotoG().then(res => {
     // 因为页面跳转了，所以将日志存储到 localStorage 中，以便查看
     localStorage.setItem('j-goto-g-log', JSON.stringify(res))
     // 重定向
