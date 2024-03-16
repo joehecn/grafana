@@ -68,7 +68,7 @@ docker cp grafana8:/usr/share/grafana/public/views/gotoG.html /root/influxdb-doc
 docker cp grafana8:/usr/share/grafana/public/views/index.html /root/influxdb-docker/views/
 
 docker cp /root/influxdb-docker/views/joe-preload.js grafana8:/usr/share/grafana/public/views
-docker cp /root/influxdb-docker/views/gotoG.html grafana8:/usr/share/grafana/public/views
+docker cp /root/influxdb-docker/views/gotoG.html influxdb-docker_grafana8_1:/usr/share/grafana/public/views
 docker cp /root/influxdb-docker/views/index.html grafana8:/usr/share/grafana/public/views
 ```
 

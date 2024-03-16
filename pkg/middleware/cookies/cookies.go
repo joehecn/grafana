@@ -45,7 +45,7 @@ func WriteCookie(w http.ResponseWriter, name string, value string, maxAge int, g
 		Name:     name,
 		MaxAge:   maxAge,
 		Value:    value,
-		HttpOnly: false,
+		HttpOnly: true,
 		Path:     options.Path,
 		Secure:   options.Secure,
 	}
