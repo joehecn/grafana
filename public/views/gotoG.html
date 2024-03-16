@@ -1,4 +1,12 @@
 <script>
+  // 删除 cookie
+  function deleteCookie(cname) {
+    const date = new Date();
+    date.setTime(date.getTime() - 10000);
+
+    document.cookie = cname + "=; expire=" + date.toGMTString() + "; path=/";
+  }
+
   function joeCoverSearch(search) {
     function getRedirect(type, path, orgId) {
       if (!path) return '/'
@@ -25,6 +33,7 @@
       password: password && decodeURIComponent(password),
       type,
       redirect,
+      orgId,
     }
   }
 
@@ -33,6 +42,7 @@
     password,
     type,
     redirect,
+    orgId
   } = joeCoverSearch(window.location.search)
 
   username && localStorage.setItem('j-user', username)
@@ -41,5 +51,37 @@
   localStorage.setItem('j-type', type)
   localStorage.setItem('j-rect', redirect)
 
-  window.location.href = window.location.origin + redirect
+  // 获取本地存储空间的 orgId
+  const localOrgId = localStorage.getItem('j-orgid')
+  const redirectUrl = window.location.origin + redirect
+
+  if (localOrgId === orgId) {
+    // 如果本地存储空间的 orgId 和当前的 orgId 一样
+    // 直接跳转
+    window.location.href = redirectUrl
+  } else {
+    deleteCookie('grafana_session')
+
+    // 登录跳转
+    fetch(window.location.origin + '/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: username,
+        password,
+      }),
+    }).then(_ => {
+      // 设置本地存储空间的 orgId
+      localStorage.setItem('j-orgid', orgId)
+      // 重定向
+      window.location.href = redirectUrl
+    }).catch(_ => {
+      // 设置本地存储空间的 orgId
+      localStorage.setItem('j-orgid', orgId)
+      // 重定向
+      window.location.href = redirectUrl
+    })
+  }
 </script>

@@ -1,15 +1,10 @@
 window.joePreload = async function () {
-  function clearAllCookies() {
+  // 删除 cookie
+  function deleteCookie(cname) {
     const date = new Date();
     date.setTime(date.getTime() - 10000);
-    const keys = document.cookie.match(/[^ =;]+(?=\=)/g);
-    if (keys) {
-      for (let i = keys.length; i--;) {
-        const key = keys[i];
-        console.log("需要删除的cookie:", key);
-        document.cookie = key + "=; expire=" + date.toGMTString() + "; path=/";
-      }
-    }
+
+    document.cookie = cname + "=; expire=" + date.toGMTString() + "; path=/";
   }
 
   function addCss(strCss) { //Copyright @ rainic.com
@@ -36,7 +31,7 @@ window.joePreload = async function () {
         // 设置已经刷新过一次，防止死循环
         localStorage.setItem('j-refreshed', '1')
         // 删除 cookie
-        clearAllCookies()
+        deleteCookie()
         // 重新刷新页面
         window.location.reload()
 
@@ -45,8 +40,6 @@ window.joePreload = async function () {
     }
 
     const type = localStorage.getItem('j-type')
-
-    // console.log({ type })
 
     if (type === 'view') {
       addCss(`
