@@ -1,10 +1,35 @@
 <script>
+  // 获取 cookie
+  function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  // 设置 cookie
+  function setCookieByExpires(cname, cvalue, expires) {
+    document.cookie = `${cname}=${cvalue}; expires=${expires}; path=/; SameSite=None; Secure`;
+  }
+  function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = d.toUTCString();
+    setCookieByExpires(cname, cvalue, expires);
+  }
+
   // 删除 cookie
   function deleteCookie(cname) {
-    const date = new Date();
-    date.setTime(date.getTime() - 10000);
-
-    document.cookie = cname + "=; expire=" + date.toGMTString() + "; path=/";
+    setCookieByExpires(cname, '', 'Thu, 01 Jan 1970 00:00:00 UTC');
   }
 
   function joeCoverSearch(search) {
@@ -37,51 +62,69 @@
     }
   }
 
-  const {
-    username,
-    password,
-    type,
-    redirect,
-    orgId
-  } = joeCoverSearch(window.location.search)
+  async function run() {
+    const {
+      username,
+      password,
+      type,
+      redirect,
+      orgId
+    } = joeCoverSearch(window.location.search)
 
-  username && localStorage.setItem('j-user', username)
-  password && localStorage.setItem('j-pass', password)
+    username && localStorage.setItem('j-user', username)
+    password && localStorage.setItem('j-pass', password)
 
-  localStorage.setItem('j-type', type)
-  localStorage.setItem('j-rect', redirect)
+    localStorage.setItem('j-type', type)
+    localStorage.setItem('j-rect', redirect)
 
-  // 获取本地存储空间的 orgId
-  const localOrgId = localStorage.getItem('j-orgid')
-  const redirectUrl = window.location.origin + redirect
+    // 获取 cookie: j-orgid
+    const cookieOrgId = getCookie('j-orgid')
+    const origin = window.location.origin
 
-  if (localOrgId === orgId) {
-    // 如果本地存储空间的 orgId 和当前的 orgId 一样
-    // 直接跳转
-    window.location.href = redirectUrl
-  } else {
-    deleteCookie('grafana_session')
+    const redirectUrl = origin + redirect
 
-    // 登录跳转
-    fetch(window.location.origin + '/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: username,
-        password,
-      }),
-    }).then(_ => {
-      // 设置本地存储空间的 orgId
-      localStorage.setItem('j-orgid', orgId)
-      // 重定向
-      window.location.href = redirectUrl
-    }).catch(_ => {
-      // 设置本地存储空间的 orgId
-      localStorage.setItem('j-orgid', orgId)
-      // 重定向
-      window.location.href = redirectUrl
-    })
+    let errMsg = ''
+
+    if (cookieOrgId !== orgId) {
+      try {
+        deleteCookie('grafana_session')
+
+        // 设置 cookie: j-orgid
+        setCookie('j-orgid', orgId, 30)
+
+        // 登录跳转
+        await fetch(origin + '/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user: username,
+            password,
+          }),
+        })
+      } catch (error) {
+        errMsg = error.message
+      }
+    }
+
+    return {
+      redirectUrl,
+      username,
+      password,
+      type,
+      redirect,
+      orgId,
+      cookieOrgId,
+      origin,
+      errMsg
+    }
   }
+
+  run().then(res => {
+    // 因为页面跳转了，所以将日志存储到 localStorage 中，以便查看
+    localStorage.setItem('j-goto-g-log', JSON.stringify(res))
+    // 重定向
+    window.location.href = res.redirectUrl
+  })
 </script>
