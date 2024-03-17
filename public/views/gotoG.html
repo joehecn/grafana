@@ -17,10 +17,12 @@
       return "";
     }
 
-    // 设置 cookie
+    // 设置 cookie by expires
     function setCookieByExpires(cname, cvalue, expires) {
       document.cookie = `${cname}=${cvalue}; expires=${expires}; path=/; SameSite=None; Secure`;
     }
+
+    // 设置 cookie
     function setCookie(cname, cvalue, exdays) {
       const d = new Date();
       d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -33,6 +35,7 @@
       setCookieByExpires(cname, '', 'Thu, 01 Jan 1970 00:00:00 UTC');
     }
 
+    // 获取 url 参数
     function joeCoverSearch(search) {
       function getRedirect(type, path, orgId) {
         if (!path) return '/'
@@ -89,10 +92,12 @@
       try {
         deleteCookie('grafana_session')
 
+        // 为什么不用 localStorage 存储 j-orgid? 可以测试一下
+        // 经测试, localStorage 存储的数据开发环境和沙盒环境不同步, 会导致一些问题
         // 设置 cookie: j-orgid
         setCookie('j-orgid', orgId, 30)
 
-        // 登录跳转
+        // login for get grafana_session cookie
         await fetch(origin + '/login', {
           method: 'POST',
           headers: {
@@ -110,13 +115,9 @@
 
     return {
       redirectUrl,
-      username,
-      password,
       type,
-      redirect,
       orgId,
       cookieOrgId,
-      origin,
       errMsg
     }
   }
