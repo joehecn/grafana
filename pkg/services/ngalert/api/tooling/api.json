@@ -4418,7 +4418,6 @@
    "type": "object"
   },
   "alertGroup": {
-   "description": "AlertGroup alert group",
    "properties": {
     "alerts": {
      "description": "alerts",
@@ -4602,12 +4601,14 @@
    "type": "object"
   },
   "gettableAlerts": {
+   "description": "GettableAlerts gettable alerts",
    "items": {
     "$ref": "#/definitions/gettableAlert"
    },
    "type": "array"
   },
   "gettableSilence": {
+   "description": "GettableSilence gettable silence",
    "properties": {
     "comment": {
      "description": "comment",
@@ -4844,7 +4845,6 @@
    "type": "object"
   },
   "receiver": {
-   "description": "Receiver receiver",
    "properties": {
     "active": {
      "description": "active",
